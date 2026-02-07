@@ -1,26 +1,46 @@
 @import "tailwindcss";
 
+/* Design Tokens */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-primary: #137fec;
+  --color-accent: #f97316;
+
+  --color-bg: #ffffff;
+  --color-surface: #f8fafc;
+
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+
+  --radius-card: 0.5rem;
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  --space-section: 2rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark {
+  --color-bg: #0f172a;
+  --color-surface: #1e293b;
+
+  --color-text: #f8fafc;
+  --color-text-muted: #94a3b8;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* Semantic classes */
+.bg-bg { background-color: var(--color-bg); }
+.bg-surface { background-color: var(--color-surface); }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+.text-text { color: var(--color-text); }
+.text-muted { color: var(--color-text-muted); }
+.text-primary { color: var(--color-primary); }
+.text-accent { color: var(--color-accent); }
+
+.bg-primary { background-color: var(--color-primary); }
+.bg-accent { background-color: var(--color-accent); }
+
+.border-muted { border-color: var(--color-text-muted); }
+.border-primary { border-color: var(--color-primary); }
+
+.rounded-card { border-radius: var(--radius-card); }
+.shadow-card { box-shadow: var(--shadow-card); }
+
+.p-section { padding: var(--space-section); }
