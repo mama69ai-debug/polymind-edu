@@ -44,3 +44,4 @@
 .shadow-card { box-shadow: var(--shadow-card); }
 
 .p-section { padding: var(--space-section); }
+.px-section { padding-left: var(--space-section); padding-right: var(--space-section); }

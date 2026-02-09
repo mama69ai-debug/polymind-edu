@@ -4,7 +4,7 @@ import React, { HTMLAttributes, forwardRef } from 'react'
 /*                                    Card                                    */
 /* -------------------------------------------------------------------------- */
 
-export interface CardProps extends HTMLAttributes<HTMLDivElement> {}
+export type CardProps = HTMLAttributes<HTMLDivElement>
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(
   ({ className = '', ...props }, ref) => {
@@ -23,7 +23,7 @@ Card.displayName = 'Card'
 /*                                 CardHeader                                 */
 /* -------------------------------------------------------------------------- */
 
-export interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {}
+export type CardHeaderProps = HTMLAttributes<HTMLDivElement>
 
 export const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
   ({ className = '', ...props }, ref) => {
@@ -42,7 +42,7 @@ CardHeader.displayName = 'CardHeader'
 /*                                 CardContent                                */
 /* -------------------------------------------------------------------------- */
 
-export interface CardContentProps extends HTMLAttributes<HTMLDivElement> {}
+export type CardContentProps = HTMLAttributes<HTMLDivElement>
 
 export const CardContent = forwardRef<HTMLDivElement, CardContentProps>(
   ({ className = '', ...props }, ref) => {
@@ -57,7 +57,7 @@ CardContent.displayName = 'CardContent'
 /*                                 CardFooter                                 */
 /* -------------------------------------------------------------------------- */
 
-export interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {}
+export type CardFooterProps = HTMLAttributes<HTMLDivElement>
 
 export const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(
   ({ className = '', ...props }, ref) => {
