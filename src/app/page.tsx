@@ -16,6 +16,7 @@ export default async function Home() {
   const featuredCourses = (courses ?? []).map((course) => ({
     course: {
       id: course.id,
+      slug: course.slug ?? '',
       title: course.title,
       description: course.description ?? '',
       coverUrl: course.cover_url ?? '',

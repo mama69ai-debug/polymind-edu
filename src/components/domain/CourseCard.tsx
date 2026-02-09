@@ -35,7 +35,7 @@ export function CourseCard({ course, instructor }: CourseCardProps) {
       </CardContent>
 
       <CardFooter>
-        <Link className="w-full" href={`/courses/${course.id}`}>
+        <Link className="w-full" href={`/courses/${course.slug}`}>
           <Button className="w-full" variant="primary">
             查看課程
           </Button>

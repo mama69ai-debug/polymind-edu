@@ -29,6 +29,7 @@ export default async function MyCoursesPage() {
     .map((enrollment) => {
       const course = enrollment.courses as unknown as {
         id: string
+        slug: string | null
         title: string
         description: string | null
         cover_url: string | null
@@ -47,6 +48,7 @@ export default async function MyCoursesPage() {
       return {
         course: {
           id: course.id,
+          slug: course.slug ?? '',
           title: course.title,
           description: course.description ?? '',
           coverUrl: course.cover_url ?? '',

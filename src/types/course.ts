@@ -19,6 +19,7 @@ export interface Chapter {
 
 export interface Course {
   id: CourseId
+  slug: string
   title: string
   description: string
   coverUrl: string

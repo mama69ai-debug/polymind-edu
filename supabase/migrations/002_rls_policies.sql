@@ -13,13 +13,14 @@ CREATE POLICY "instructors_public_read" ON instructors
 CREATE POLICY "courses_public_read" ON courses
   FOR SELECT USING (status = 'published');
 
--- course_chapters: 公開可讀（透過 course 關聯）
-CREATE POLICY "chapters_public_read" ON course_chapters
+-- course_chapters: 僅已加入課程者可讀（避免未購買者看到章節內容）
+CREATE POLICY "chapters_enrolled_read" ON course_chapters
   FOR SELECT USING (
     EXISTS (
-      SELECT 1 FROM courses 
-      WHERE courses.id = course_chapters.course_id 
-      AND courses.status = 'published'
+      SELECT 1
+      FROM enrollments
+      WHERE enrollments.course_id = course_chapters.course_id
+        AND enrollments.user_id = auth.uid()
     )
   );
 

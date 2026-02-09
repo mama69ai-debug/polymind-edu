@@ -5,17 +5,17 @@ import { PageHeader, PageLayout, Section } from '@/components/layout'
 import { Card, CardContent } from '@/components/ui'
 
 interface LearnPageProps {
-  params: Promise<{ id: string }>
+  params: Promise<{ slug: string }>
 }
 
 export default async function LearnPage({ params }: LearnPageProps) {
-  const { id } = await params
+  const { slug } = await params
   const supabase = await createClient()
 
   const { data: course } = await supabase
     .from('courses')
     .select('*')
-    .eq('id', id)
+    .eq('slug', slug)
     .eq('status', 'published')
     .single()
 
@@ -24,7 +24,7 @@ export default async function LearnPage({ params }: LearnPageProps) {
   const { data: chapters } = await supabase
     .from('course_chapters')
     .select('*')
-    .eq('course_id', id)
+    .eq('course_id', course.id)
     .order('sort_order', { ascending: true })
 
   const chaptersData = (chapters ?? []).map((ch) => ({

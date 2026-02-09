@@ -155,7 +155,7 @@ MVP 只驗證 3 件事：
 
 ### Flow 1：第一次購課
 
-訪問首頁 → 瀏覽課程 → 查看詳情 → 註冊 / 登入 → 付款 → 進入我的課程
+訪問首頁 → 瀏覽課程 → 查看詳情（/courses/[slug]） → 註冊 / 登入 → 付款 → 進入我的課程
 
 ---
 
@@ -179,6 +179,20 @@ MVP 僅需要：
 * course_chapters
 
 其餘表（評價、證書、MBTI 詳表）延後。
+
+### 7.1 URL 安全設計（Slug）
+
+* `courses` 表新增 `slug` 欄位（唯一、公開用識別碼）
+* 所有前端 URL 使用 slug 而非內部 UUID：`/courses/[slug]`、`/courses/[slug]/learn`
+* DB trigger 在 INSERT 時自動從 title 產生 slug（小寫英數 + 減號，重複自動加後綴）
+* 內部 UUID 僅用於 DB 關聯，不暴露到瀏覽器
+
+### 7.2 RLS 存取控制
+
+* `courses` / `instructors`：公開可讀（已發布課程）
+* `course_chapters`：僅已 enroll 的使用者可讀（防止未購買者看到章節內容）
+* `enrollments` / `orders`：僅本人可讀
+* 寫入操作由 server 端 / webhook 以 service_role 執行
 
 ---
 

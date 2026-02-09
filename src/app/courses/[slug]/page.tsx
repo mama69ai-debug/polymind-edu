@@ -6,19 +6,19 @@ import { PageHeader, PageLayout, Section } from '@/components/layout'
 import { Button, Card, CardContent } from '@/components/ui'
 
 interface CourseDetailPageProps {
-  params: Promise<{ id: string }>
+  params: Promise<{ slug: string }>
 }
 
 export default async function CourseDetailPage({
   params,
 }: CourseDetailPageProps) {
-  const { id } = await params
+  const { slug } = await params
   const supabase = await createClient()
 
   const { data: course } = await supabase
     .from('courses')
     .select('*, instructor:instructors(*)')
-    .eq('id', id)
+    .eq('slug', slug)
     .eq('status', 'published')
     .single()
 
@@ -27,11 +27,12 @@ export default async function CourseDetailPage({
   const { data: chapters } = await supabase
     .from('course_chapters')
     .select('*')
-    .eq('course_id', id)
+    .eq('course_id', course.id)
     .order('sort_order', { ascending: true })
 
   const courseData = {
     id: course.id,
+    slug: course.slug ?? '',
     title: course.title,
     description: course.description ?? '',
     coverUrl: course.cover_url ?? '',
@@ -68,7 +69,7 @@ export default async function CourseDetailPage({
               <div className="text-sm text-muted">
                 價格：NT$ {courseData.price.toLocaleString('zh-TW')}
               </div>
-              <Link href={`/courses/${courseData.id}/learn`}>
+              <Link href={`/courses/${courseData.slug}/learn`}>
                 <Button variant="primary">進入學習頁</Button>
               </Link>
             </CardContent>

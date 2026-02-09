@@ -12,6 +12,7 @@ export const mockInstructors: Instructor[] = [
 export const mockCourses: Course[] = [
   {
     id: 'course_1',
+    slug: 'ai-engineering-mvp',
     title: 'AI 工程實作入門：從需求到上線',
     description:
       '用最短路徑打造可交付的 AI 專案：需求拆解、資料流程、部署與監控。',

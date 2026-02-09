@@ -37,9 +37,9 @@
 
 ### 1.3 頁面路由（App Router）
 - [x] `/courses` — 課程列表頁
-- [x] `/courses/[id]` — 課程詳情頁（含講師 + 章節）
+- [x] `/courses/[slug]` — 課程詳情頁（含講師 + 章節）
 - [x] `/my-courses` — 我的課程頁（假資料）
-- [x] `/courses/[id]/learn` — 學習頁（章節內容占位）
+- [x] `/courses/[slug]/learn` — 學習頁（章節內容占位）
 
 ### 1.4 首頁改造
 - [x] `src/app/page.tsx` 改為產品首頁（課程精選 + CTA）
@@ -59,7 +59,7 @@
 
 ### 2.1 DB Schema（最小可用）
 - [x] `instructors`：id / name / avatar_url / bio / created_at
-- [x] `courses`：id / title / description / cover_url / price / instructor_id / status / created_at
+- [x] `courses`：id / slug / title / description / cover_url / price / instructor_id / status / created_at
 - [x] `course_chapters`：id / course_id / title / content / sort_order / created_at
 - [x] `orders`：id / user_id / course_id / stripe_session_id / status / amount / created_at
 - [x] `enrollments`：id / user_id / course_id / enrolled_at
@@ -75,7 +75,8 @@
 - [x] enrollments.course_id → courses.id
 
 ### 2.3 RLS（Row Level Security）
-- [x] courses / instructors / course_chapters：公開可讀
+- [x] courses / instructors：公開可讀（已發布課程）
+- [x] course_chapters：僅已 enroll 的使用者可讀
 - [x] orders：僅本人可讀
 - [x] enrollments：僅本人可讀
 - [x] 寫入：由 server 端 / webhook 執行（service_role）
@@ -96,6 +97,13 @@
 - [x] 註冊頁 `/auth/register`
 - [x] Auth 狀態管理（session / middleware 保護路由）
 - [x] Navbar 根據登入狀態切換顯示
+
+### 2.7 URL 安全（Slug）
+- [x] `courses` 新增 `slug` 欄位（唯一索引，允許 NULL）：`003_add_course_slug.sql`
+- [x] DB trigger 自動從 title 產生 slug：`004_courses_slug_trigger.sql`
+- [x] 前端路由改為 `/courses/[slug]`（取代 `/courses/[id]`）
+- [x] 所有課程連結改用 `course.slug`
+- [x] Course 型別補上 `slug` 屬性
 
 ### Phase 2 驗收
 - [x] 假資料頁面全部替換為真資料
