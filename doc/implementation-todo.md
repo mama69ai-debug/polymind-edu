@@ -116,28 +116,35 @@
 ## Phase 3：交易閉環（Stripe）
 
 ### 3.1 Stripe 設定
-- [ ] 安裝 `stripe` + `@stripe/stripe-js`
-- [ ] 環境變數：`STRIPE_SECRET_KEY` / `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` / `STRIPE_WEBHOOK_SECRET`
+- [x] 安裝 `stripe` + `@stripe/stripe-js`
+- [x] 環境變數：`STRIPE_SECRET_KEY` / `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` / `STRIPE_WEBHOOK_SECRET`
+- [x] Stripe lib：`src/lib/stripe/client.ts` / `src/lib/stripe/server.ts`
 
 ### 3.2 Checkout 流程
-- [ ] 課程詳情頁「購買」按鈕（已登入才可觸發）
-- [ ] API Route：建立 Stripe Checkout Session
-- [ ] 成功頁 / 取消頁
+- [x] 課程詳情頁「購買」按鈕（已登入才可觸發）
+- [x] PurchaseButton 客戶端組件（處理購買流程）
+- [x] API Route：建立 Stripe Checkout Session (`/api/checkout`)
+- [x] 成功頁 (`/checkout/success`)
+- [x] 取消頁（回到課程詳情頁）
 
 ### 3.3 Webhook
-- [ ] API Route：接收 `checkout.session.completed`
-- [ ] 寫入 orders（標記 paid）
-- [ ] 建立 enrollments（user 獲得課程權限）
-- [ ] 冪等處理：同一事件不重複入庫
+- [x] API Route：接收 `checkout.session.completed` (`/api/webhooks/stripe`)
+- [x] 寫入 orders（標記 paid）
+- [x] 建立 enrollments（user 獲得課程權限）
+- [x] 冪等處理：同一事件不重複入庫
 
 ### 3.4 權限控制
-- [ ] 學習頁：驗證 enrollment 後才能進入
-- [ ] 未購買顯示「購買」提示
+- [x] 學習頁：驗證 enrollment 後才能進入
+- [x] 未購買顯示「購買」提示
+- [x] 未登入重定向到登入頁
 
 ### Phase 3 驗收
 - [ ] 完整流程：註冊 → 登入 → 瀏覽 → 付款 → 我的課程出現該課程
 - [ ] 付款後可直接進入學習頁
 - [ ] 失敗/取消不建立 enrollment
+
+### 環境變數設定
+- [x] 詳細設定說明：`doc/stripe-setup.md`
 
 ---
 

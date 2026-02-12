@@ -1,8 +1,9 @@
-import { notFound } from 'next/navigation'
+import Link from 'next/link'
+import { notFound, redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { ChapterList } from '@/components/domain'
 import { PageHeader, PageLayout, Section } from '@/components/layout'
-import { Card, CardContent } from '@/components/ui'
+import { Button, Card, CardContent } from '@/components/ui'
 
 interface LearnPageProps {
   params: Promise<{ slug: string }>
@@ -20,6 +21,49 @@ export default async function LearnPage({ params }: LearnPageProps) {
     .single()
 
   if (!course) return notFound()
+
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect(`/auth/login?redirect=/courses/${slug}/learn`)
+  }
+
+  const { data: enrollment } = await supabase
+    .from('enrollments')
+    .select('id')
+    .eq('user_id', user.id)
+    .eq('course_id', course.id)
+    .single()
+
+  if (!enrollment) {
+    return (
+      <PageLayout>
+        <PageHeader
+          title="需要購買課程"
+          description="您尚未購買此課程，請先完成購買才能觀看內容。"
+        />
+        <Section>
+          <Card>
+            <CardContent className="flex flex-col gap-4 text-center py-8">
+              <div className="text-4xl">🔒</div>
+              <h2 className="text-xl font-semibold">此課程需要購買</h2>
+              <p className="text-muted">
+                請先購買課程後，即可觀看完整內容。
+              </p>
+              <div className="flex gap-3 justify-center mt-4">
+                <Link href={`/courses/${slug}`}>
+                  <Button variant="primary">查看課程詳情</Button>
+                </Link>
+                <Link href="/courses">
+                  <Button variant="secondary">瀏覽其他課程</Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </Section>
+      </PageLayout>
+    )
+  }
 
   const { data: chapters } = await supabase
     .from('course_chapters')

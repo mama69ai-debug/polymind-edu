@@ -1,9 +1,8 @@
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { ChapterList, InstructorCard } from '@/components/domain'
+import { ChapterList, InstructorCard, PurchaseButton } from '@/components/domain'
 import { PageHeader, PageLayout, Section } from '@/components/layout'
-import { Button, Card, CardContent } from '@/components/ui'
+import { Card, CardContent } from '@/components/ui'
 
 interface CourseDetailPageProps {
   params: Promise<{ slug: string }>
@@ -23,6 +22,20 @@ export default async function CourseDetailPage({
     .single()
 
   if (!course) return notFound()
+
+  const { data: { user } } = await supabase.auth.getUser()
+
+  let isEnrolled = false
+  if (user) {
+    const { data: enrollment } = await supabase
+      .from('enrollments')
+      .select('id')
+      .eq('user_id', user.id)
+      .eq('course_id', course.id)
+      .single()
+    
+    isEnrolled = !!enrollment
+  }
 
   const { data: chapters } = await supabase
     .from('course_chapters')
@@ -69,9 +82,11 @@ export default async function CourseDetailPage({
               <div className="text-sm text-muted">
                 價格：NT$ {courseData.price.toLocaleString('zh-TW')}
               </div>
-              <Link href={`/courses/${courseData.slug}/learn`}>
-                <Button variant="primary">進入學習頁</Button>
-              </Link>
+              <PurchaseButton
+                courseId={courseData.id}
+                courseSlug={courseData.slug}
+                isEnrolled={isEnrolled}
+              />
             </CardContent>
           </Card>
         </Section>
