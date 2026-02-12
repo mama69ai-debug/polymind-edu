@@ -9,8 +9,9 @@ export async function POST(request: NextRequest) {
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     
     if (authError || !user) {
+      console.error('Auth error:', authError);
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: 'Unauthorized', details: authError?.message },
         { status: 401 }
       );
     }
@@ -31,8 +32,9 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (courseError || !course) {
+      console.error('Course error:', courseError);
       return NextResponse.json(
-        { error: 'Course not found' },
+        { error: 'Course not found', details: courseError?.message },
         { status: 404 }
       );
     }
@@ -79,8 +81,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ url: session.url });
   } catch (error) {
     console.error('Checkout error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error', details: errorMessage },
       { status: 500 }
     );
   }

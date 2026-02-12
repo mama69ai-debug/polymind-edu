@@ -33,7 +33,10 @@ export function PurchaseButton({ courseId, courseSlug, isEnrolled }: PurchaseBut
           router.push(`/auth/login?redirect=/courses/${courseSlug}`);
           return;
         }
-        throw new Error(data.error || 'Failed to create checkout session');
+        
+        console.error('Checkout error:', data);
+        const errorMsg = data.details ? `${data.error}: ${data.details}` : data.error;
+        throw new Error(errorMsg || 'Failed to create checkout session');
       }
 
       if (data.url) {
@@ -41,7 +44,8 @@ export function PurchaseButton({ courseId, courseSlug, isEnrolled }: PurchaseBut
       }
     } catch (error) {
       console.error('Purchase error:', error);
-      alert('購買失敗，請稍後再試');
+      const errorMessage = error instanceof Error ? error.message : '購買失敗，請稍後再試';
+      alert(errorMessage);
       setIsLoading(false);
     }
   };
