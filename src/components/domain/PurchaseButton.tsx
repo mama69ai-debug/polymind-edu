@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui';
-import { getStripe } from '@/lib/stripe/client';
 
 interface PurchaseButtonProps {
   courseId: string;
@@ -37,22 +36,12 @@ export function PurchaseButton({ courseId, courseSlug, isEnrolled }: PurchaseBut
         throw new Error(data.error || 'Failed to create checkout session');
       }
 
-      const stripe = await getStripe();
-      if (!stripe) {
-        throw new Error('Failed to load Stripe');
-      }
-
-      const { error } = await stripe.redirectToCheckout({
-        sessionId: data.sessionId,
-      });
-
-      if (error) {
-        throw error;
+      if (data.url) {
+        window.location.href = data.url;
       }
     } catch (error) {
       console.error('Purchase error:', error);
       alert('購買失敗，請稍後再試');
-    } finally {
       setIsLoading(false);
     }
   };
